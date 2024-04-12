@@ -1,13 +1,23 @@
+import java.io.File;
 import java.util.Scanner;
 //import java.util.ArrayList;
 //import java.util.LinkedList;
 
 public class TMSimulator {
     public static void main(String[] args){
+        final long startTime = System.currentTimeMillis();
+
         if (args.length == 0){
             System.out.println("Add file name");
         }
-        Scanner scn = new Scanner(args[0]);
+
+        try{
+
+
+        //File file = new File(args[0]);
+        File file = new File("file5.txt");
+        Scanner scn = new Scanner(file);
+
 
         int numStates = Integer.parseInt(scn.nextLine());
         int numSigma = Integer.parseInt(scn.nextLine());
@@ -15,21 +25,26 @@ public class TMSimulator {
         TM tm = new TM(numStates,numSigma);
 
         String[] t = new String[3];
-        for (int state = 0; state < numStates; state++){
+        for (int state = 0; state < numStates - 1; state++){
             for (int c = 0; c <= numSigma; c++){
                 t = scn.nextLine().split(",");
                 tm.addTransition(state,c,t[0],t[1],t[2]);
             }
         }
 
-        String input = scn.nextLine();
-        if(!input.equals("")){
-            tm.addInput(input);
+        if(scn.hasNextLine()){
+            tm.addInput(scn.nextLine());
         }
 
-        //test tm halt
+        tm.test();
 
         scn.close();
+    } catch (Exception ex) {
+        ex.printStackTrace();
+    }
+    final long endTime = System.currentTimeMillis();
+
+    System.out.println("Total execution time: " + (endTime - startTime));
     }
 
 }
