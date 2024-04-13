@@ -1,56 +1,58 @@
-//import java.util.Set;
-//import java.util.List;
-import java.util.LinkedHashSet;
+package TM;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
 public class TM {
     //7-Tuple:
-    //private int alphabet;
-    private LinkedHashSet<Character> tapeAlphabet;
     private TMState[] states;
-    //private TMState qAccept;
-    private int qAccept;
-    //Not needed TMState qReject;
-    //TMState startState;
+    private int qAccept;;
     private LinkedList<Character> tape;
     
+    /**
+     * Constructor for a Turing Machine, 
+     * @param numStates
+     * @param numSigma
+     */
     public TM(int numStates, int numSigma){
-        this.tapeAlphabet = new LinkedHashSet<>();
-        this.tapeAlphabet.add('0');
-
+        //this.alphabet = numSigma;
         this.states = new TMState[numStates];
-        //startState = new TMState(numSigma);
-        //states[0] = startState;
         for (int i = 0; i < numStates; i++){
             states[i] = new TMState(numSigma);
         }
-        //qAccept = new TMState(numSigma);
-        //states[numStates] = qAccept;
         qAccept = numStates-1;
         tape = new LinkedList<>();
     }
 
 
-    public boolean test(){
-        //Integer.parseInt() is fastest
-
-        int curr = 0;
+    /**
+     * Simulates the Turing Machine 
+     * 
+     * @return
+     */
+    public void runTM(){
+        //If input string is empty, then the tape will be empty, so initialize with a 0 (blank)
         if (tape.size() == 0){
             tape.addFirst('0');
         }
         ListIterator<Character> itr = tape.listIterator(0);
-        // if(!itr.hasNext()){
-        //     itr.add('0');
-        // }
+
+        //The character being read from the location of the head
         char c = itr.next();
+        //The current state
+        int curr = 0;
+        //Keeps track of the last move that was made
         String lastMove = "R";
+
         while (curr != qAccept){
-            String[] t = states[curr].getT(c-'0');
+            //Gets the transition of the current state based on the character read from the tape
+            String[] t = states[curr].getTransition(c-'0');
             
+            //Sets current state to the next state from the transition array
             curr = Integer.parseInt(t[0]);
+            //Writes the symbol from the transition array
             itr.set(t[1].charAt(0));
 
+            //Moves next or previous depending on the move direction being right(R) or left(L) 
             if (t[2].equals("R")){
                 if (lastMove.equals("L")){
                     itr.next();
@@ -72,20 +74,28 @@ public class TM {
                 lastMove = "L";
             }
         }
-
-        System.out.println(tape.toString());
-        System.out.println(tape.size());
-
-        return true;
     }
 
+    /**
+     * Calculates the sum of all symbols on the tape
+     * 
+     * @return
+     */
+    private int sum(){
+        ListIterator<Character> itr = tape.listIterator(0);
+        int sum = 0;
+        while (itr.hasNext()){
+            sum += (itr.next()-'0');
+        }
+        return sum;
+    }
 
     /**
      * Adds the input string to the tape linked list
      * 
      * @param input
      */
-    public void addInput(String input){
+    public void addInput(String input){   
         for (int i = 0; i < input.length(); i++){
             tape.add(input.charAt(i));
         }
@@ -105,5 +115,21 @@ public class TM {
         return states[state].addT(c,toState,write,move);
     }
 
+
+    /**
+     * Makes a string with the output of the TM's tape, the length, and the sum of its symbols
+     * 
+     * @return String
+     */
+    public String toString(){
+        String str = tape.toString();
+        str = str.substring(1,str.length()-1);
+        str = str.replace(", ","");
+        StringBuilder retVal = new StringBuilder(str);
+
+        retVal.append("\noutput length: " + tape.size());
+        retVal.append("\nsum of symbols: " + sum());
+        return retVal.toString();
+    }
     
 }

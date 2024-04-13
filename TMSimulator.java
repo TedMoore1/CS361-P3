@@ -1,9 +1,16 @@
 import java.io.File;
 import java.util.Scanner;
-//import java.util.ArrayList;
-//import java.util.LinkedList;
 
+import TM.TM;
+
+/**
+ * 
+ * 
+ * @author
+ */
 public class TMSimulator {
+
+
     public static void main(String[] args){
         final long startTime = System.currentTimeMillis();
 
@@ -12,7 +19,6 @@ public class TMSimulator {
         }
 
         try{
-
 
         //File file = new File(args[0]);
         File file = new File("file5.txt");
@@ -36,7 +42,9 @@ public class TMSimulator {
             tm.addInput(scn.nextLine());
         }
 
-        tm.test();
+        tm.runTM();
+        System.out.println("output:");
+        System.out.println(tm.toString());
 
         scn.close();
     } catch (Exception ex) {
@@ -44,7 +52,6 @@ public class TMSimulator {
     }
     final long endTime = System.currentTimeMillis();
 
-    System.out.println("Total execution time: " + (endTime - startTime));
+    System.out.println("Total execution time: " + (endTime - startTime)/1000.0);
     }
-
 }
