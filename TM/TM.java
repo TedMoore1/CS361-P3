@@ -2,6 +2,13 @@ package TM;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
+/** 
+ * This class defines a turing machine with a linkedlist for its tape, 
+ * allowing the user to define an initial input for this tape as well
+ * states in the machine and their transitions
+ * 
+ * @author tedmoore, benbrindley
+ */
 public class TM {
     //7-Tuple:
     private TMState[] states;
@@ -22,7 +29,6 @@ public class TM {
         qAccept = numStates-1;
         tape = new LinkedList<>();
     }
-
 
     /**
      * Simulates the Turing Machine 
@@ -77,20 +83,6 @@ public class TM {
     }
 
     /**
-     * Calculates the sum of all symbols on the tape
-     * 
-     * @return
-     */
-    private int sum(){
-        ListIterator<Character> itr = tape.listIterator(0);
-        int sum = 0;
-        while (itr.hasNext()){
-            sum += (itr.next()-'0');
-        }
-        return sum;
-    }
-
-    /**
      * Adds the input string to the tape linked list
      * 
      * @param input
@@ -115,21 +107,16 @@ public class TM {
         return states[state].addT(c,toState,write,move);
     }
 
-
     /**
      * Makes a string with the output of the TM's tape, the length, and the sum of its symbols
      * 
      * @return String
      */
     public String toString(){
-        String str = tape.toString();
-        str = str.substring(1,str.length()-1);
-        str = str.replace(", ","");
-        StringBuilder retVal = new StringBuilder(str);
-
-        retVal.append("\noutput length: " + tape.size());
-        retVal.append("\nsum of symbols: " + sum());
-        return retVal.toString();
+        StringBuilder str = new StringBuilder(tape.size());
+        for (Character c : tape) {
+            str.append(c);
+        }
+        return str.toString();
     }
-    
 }

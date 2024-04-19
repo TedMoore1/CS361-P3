@@ -1,8 +1,9 @@
 package TM;
 
 /**
+ * This class defines a turing machine object with a 2d array of transitions
  * 
- * @author
+ * @author tedmoore, benbrindley
  */
 public class TMState {
     private String[][] transitions;
