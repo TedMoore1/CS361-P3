@@ -1,6 +1,6 @@
 # Project 3: Turing Machine simulator
 
-* Author: Ted Moore
+* Author: Ted Moore Ben Brindley
 * Class: CS361 Section 002
 * Semester: Spring 2023
 
